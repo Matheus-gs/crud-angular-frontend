@@ -5,6 +5,7 @@ import { User } from "src/app/models/user.model";
 import { UserService } from "src/app/services/user.service";
 
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MatDialogRef } from "@angular/material/dialog";
 
 @Component({
   selector: "app-user-create",
@@ -17,7 +18,8 @@ export class UserCreateComponent implements OnInit {
   constructor(
     private router: Router,
     private userService: UserService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public addModal: MatDialogRef<UserCreateComponent>
   ) {
     this.user = this.formBuilder.group({
       name: ["", Validators.required],
@@ -36,12 +38,15 @@ export class UserCreateComponent implements OnInit {
   }
 
   handleCreateUser(): void {
-    const data = this.user.value;
-    
-    if (this.user.valid && this.isAdult() == true) {
+    const data: User = this.user.value;
+    if (
+      this.user.valid &&
+      this.userService.isAdult(this.user.value.bornDate) == true
+    ) {
       this.userService.create(data).subscribe(() => {
         this.userService.showMessage("Usuário cadastrado com sucesso!");
-        this.router.navigate(["users"]);
+        this.addModal.close();
+        // location.reload();
       });
     } else if (this.isAdult() == false) {
       this.userService.showMessage(
@@ -57,6 +62,7 @@ export class UserCreateComponent implements OnInit {
   }
 
   handleCancelCreateUser(): void {
+    this.addModal.close();
     this.router.navigate(["users"]);
   }
 }

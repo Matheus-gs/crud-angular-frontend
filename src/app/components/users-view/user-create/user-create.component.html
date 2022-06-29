@@ -1,4 +1,4 @@
-<mat-card>
+<mat-dialog-content class="modal-create">
   <mat-card-title> Cadastre um novo usuário </mat-card-title>
   <form [formGroup]="user">
     <mat-form-field appearance="outline">
@@ -45,9 +45,9 @@
         required
       />
       <!-- <ng-container *ngIf="user.controls.role.touched"> -->
-        <mat-error *ngIf="user.controls.role.errors">
-          Campo obrigatório
-        </mat-error>
+      <mat-error *ngIf="user.controls.role.errors">
+        Campo obrigatório
+      </mat-error>
       <!-- </ng-container> -->
     </mat-form-field>
 
@@ -67,16 +67,17 @@
       </mat-error>
       <!-- </ng-container> -->
     </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="!user.valid"
+      (click)="handleCreateUser()"
+    >
+      Salvar
+    </button>
+    <button mat-raised-button (click)="handleCancelCreateUser()">
+      Cancelar
+    </button>
   </form>
-
-  <button
-    mat-raised-button
-    color="primary"
-    [disabled]="!user.valid"
-    (click)="handleCreateUser()"
-  >
-    Salvar
-  </button>
-
-  <button mat-raised-button (click)="handleCancelCreateUser()">Cancelar</button>
-</mat-card>
+</mat-dialog-content>

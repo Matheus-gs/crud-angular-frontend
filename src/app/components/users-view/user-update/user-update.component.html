@@ -1,54 +1,84 @@
-<mat-card mat-elevation-z4>
+<mat-card>
   <mat-card-title>
     {{ userCurrentName && "Informações de " + userCurrentName.split(" ")[0] }}
   </mat-card-title>
-
-  <form>
+  <form [formGroup]="user">
     <mat-form-field appearance="outline">
       <mat-label>Nome</mat-label>
       <input
         matInput
         placeholder="Nome de usuário"
-        [(ngModel)]="user.name"
+        formControlName="name"
         name="name"
         required
       />
+      <!-- <ng-container *ngIf="user.controls.name.touched"> -->
+      <mat-error *ngIf="user.controls.name.errors">
+        Campo obrigatório
+      </mat-error>
+      <!-- </ng-container> -->
     </mat-form-field>
+
     <mat-form-field appearance="outline">
       <mat-label>E-mail</mat-label>
       <input
         matInput
         placeholder="seunome@email.com"
-        [(ngModel)]="user.email"
-        name="mail"
+        email
+        formControlName="email"
+        name="email"
         required
       />
+
+      <!-- <ng-container *ngIf="user.controls.email.touched"> -->
+      <mat-error *ngIf="user.controls.email.errors?.email">
+        E-mail inválido
+      </mat-error>
+      <!-- </ng-container> -->
     </mat-form-field>
+
     <mat-form-field appearance="outline">
       <mat-label>Cargo</mat-label>
       <input
         matInput
         placeholder="Ex: Desenvolvedor Frontend Angular JR"
-        [(ngModel)]="user.role"
+        formControlName="role"
         name="role"
         required
       />
+      <!-- <ng-container *ngIf="user.controls.role.touched"> -->
+      <mat-error *ngIf="user.controls.role.errors">
+        Campo obrigatório
+      </mat-error>
+      <!-- </ng-container> -->
     </mat-form-field>
+
     <mat-form-field appearance="outline">
-      <mat-label>Idade</mat-label>
+      <mat-label>Data de nascimento</mat-label>
       <input
-      type="date"
+        type="date"
         matInput
-        placeholder="Ex: 20"
-        [(ngModel)]="user.bornDate"
-        name="age"
+        placeholder="Ex: 20/06/1989"
+        formControlName="bornDate"
+        name="bornDate"
         required
       />
+      <!-- <ng-container *ngIf="user.controls.bornDate.touched"> -->
+      <mat-error *ngIf="user.controls.bornDate.errors">
+        Campo obrigatório
+      </mat-error>
+      <!-- </ng-container> -->
     </mat-form-field>
   </form>
 
-  <button mat-raised-button color="primary" (click)="handleUpdateUser()">
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="!user.valid"
+    (click)="handleUpdateUser()"
+  >
     Salvar
   </button>
+
   <button mat-raised-button (click)="handleCancelUpdateUser()">Cancelar</button>
 </mat-card>

@@ -18,6 +18,8 @@ import { catchError, EMPTY, map, Observable } from "rxjs";
 export class UserService {
   baseUrl = "http://localhost:3001/users/";
 
+  users: User[];
+
   constructor(private snackBar: MatSnackBar, private http: HttpClient) {}
 
   showMessage(msg: string, isError: boolean = false): void {
@@ -34,6 +36,12 @@ export class UserService {
     return EMPTY;
   }
 
+  isAdult(date: string): boolean {
+    const currentYear = new Date().getFullYear();
+    const userBornDateYear = new Date(date).getFullYear();
+    return currentYear - userBornDateYear >= 18;
+  }
+
   create(user: User): Observable<User> {
     return this.http.post<User>(this.baseUrl, user).pipe(
       map((obj) => obj),
@@ -43,6 +51,13 @@ export class UserService {
 
   read(): Observable<User[]> {
     return this.http.get<User[]>(this.baseUrl);
+  }
+
+  getUsers(): Array<User> {
+    this.read().subscribe((data) => {
+      this.users = data;
+    });
+    return this.users;
   }
 
   readById(id: number): Observable<User> {

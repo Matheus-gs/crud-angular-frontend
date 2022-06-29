@@ -30,6 +30,7 @@ import { UsersViewComponent } from "./views/users-view/users-view.component";
 import { UserCreateComponent } from "./components/users-view/user-create/user-create.component";
 import { UserReadComponent } from './components/users-view/user-read/user-read.component';
 import { UserUpdateComponent } from './components/users-view/user-update/user-update.component';
+import { UserDeleteComponent } from './components/users-view/user-delete/user-delete.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { UserUpdateComponent } from './components/users-view/user-update/user-up
     UserCreateComponent,
     UserReadComponent,
     UserUpdateComponent,
+    UserDeleteComponent,
   ],
   imports: [
     BrowserModule,
