@@ -1,0 +1,54 @@
+<mat-card mat-elevation-z4>
+  <mat-card-title>
+    {{ userCurrentName && "Informações de " + userCurrentName.split(" ")[0] }}
+  </mat-card-title>
+
+  <form>
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input
+        matInput
+        placeholder="Nome de usuário"
+        [(ngModel)]="user.name"
+        name="name"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>E-mail</mat-label>
+      <input
+        matInput
+        placeholder="seunome@email.com"
+        [(ngModel)]="user.email"
+        name="mail"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Cargo</mat-label>
+      <input
+        matInput
+        placeholder="Ex: Desenvolvedor Frontend Angular JR"
+        [(ngModel)]="user.role"
+        name="role"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Idade</mat-label>
+      <input
+      type="date"
+        matInput
+        placeholder="Ex: 20"
+        [(ngModel)]="user.bornDate"
+        name="age"
+        required
+      />
+    </mat-form-field>
+  </form>
+
+  <button mat-raised-button color="primary" (click)="handleUpdateUser()">
+    Salvar
+  </button>
+  <button mat-raised-button (click)="handleCancelUpdateUser()">Cancelar</button>
+</mat-card>
