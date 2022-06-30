@@ -1,10 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { Router } from "@angular/router";
+
 import { User } from "src/app/models/user.model";
 import { UserService } from "src/app/services/user.service";
 import { UserCreateComponent } from "../user-create/user-create.component";
 import { UserDeleteComponent } from "../user-delete/user-delete.component";
+import { UserUpdateComponent } from "../user-update/user-update.component";
 
 @Component({
   selector: "app-user-read",
@@ -16,7 +17,7 @@ export class UserReadComponent implements OnInit {
   displayedColumns = ["name", "email", "role", "bornDate", "actions"];
   constructor(
     private userService: UserService,
-    private router: Router,
+
     public dialog: MatDialog
   ) {}
 
@@ -26,13 +27,24 @@ export class UserReadComponent implements OnInit {
     });
   }
 
-  handleUpdateUser(id: number): void {
-    this.router.navigate([`users/update/${id}`]);
-  }
-
   openCreateUserModal(): void {
     const dialogRef = this.dialog.open(UserCreateComponent, {
       width: "550px",
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.userService.read().subscribe((userData) => {
+        this.users = userData;
+      });
+    });
+  }
+
+  openUpdateUserModal(id: number): void {
+    const dialogRef = this.dialog.open(UserUpdateComponent, {
+      width: "550px",
+      data: {
+        id: id,
+      },
     });
 
     dialogRef.afterClosed().subscribe(() => {
@@ -56,13 +68,4 @@ export class UserReadComponent implements OnInit {
       });
     });
   }
-
-  // handleDeleteUser(id: number): void {
-  //   this.userService.delete(id).subscribe(() => {
-  //     this.userService.showMessage("Usuário removido com sucesso!");
-  //     this.userService.read().subscribe((userData) => {
-  //       this.users = userData;
-  //     });
-  //   });
-  // }
 }

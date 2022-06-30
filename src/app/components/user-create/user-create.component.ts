@@ -1,11 +1,39 @@
 import { Component, OnInit } from "@angular/core";
 
-import { Router } from "@angular/router";
 import { User } from "src/app/models/user.model";
 import { UserService } from "src/app/services/user.service";
 
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+  FormGroupDirective,
+  NgForm,
+  ValidatorFn,
+  AbstractControl,
+  ValidationErrors,
+  FormGroupName,
+} from "@angular/forms";
+
 import { MatDialogRef } from "@angular/material/dialog";
+
+import { ErrorStateMatcher } from "@angular/material/core";
+
+/** Error when invalid control is dirty, touched, or submitted. */
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(
+      control &&
+      control.invalid &&
+      (control.dirty || control.touched || isSubmitted)
+    );
+  }
+}
 
 @Component({
   selector: "app-user-create",
@@ -14,12 +42,12 @@ import { MatDialogRef } from "@angular/material/dialog";
 })
 export class UserCreateComponent implements OnInit {
   user: any = FormGroup;
+  matcher = new MyErrorStateMatcher();
 
   constructor(
-    private router: Router,
     private userService: UserService,
     private formBuilder: FormBuilder,
-    public addModal: MatDialogRef<UserCreateComponent>
+    public dialog: MatDialogRef<UserCreateComponent>
   ) {
     this.user = this.formBuilder.group({
       name: ["", Validators.required],
@@ -31,28 +59,13 @@ export class UserCreateComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  isAdult(): boolean {
-    const currentYear = new Date().getFullYear();
-    const userBornDateYear = new Date(this.user.value.bornDate).getFullYear();
-    return currentYear - userBornDateYear >= 18;
-  }
-
   handleCreateUser(): void {
     const data: User = this.user.value;
-    if (
-      this.user.valid &&
-      this.userService.isAdult(this.user.value.bornDate) == true
-    ) {
+    if (this.user.valid) {
       this.userService.create(data).subscribe(() => {
         this.userService.showMessage("Usuário cadastrado com sucesso!");
-        this.addModal.close();
-        // location.reload();
+        this.dialog.close();
       });
-    } else if (this.isAdult() == false) {
-      this.userService.showMessage(
-        "Só é permitido o cadastro de usuários maiores de 18 anos!",
-        true
-      );
     } else {
       this.userService.showMessage(
         "Verifique os dados e tente novamente!",
@@ -61,8 +74,7 @@ export class UserCreateComponent implements OnInit {
     }
   }
 
-  handleCancelCreateUser(): void {
-    this.addModal.close();
-    this.router.navigate(["users"]);
+  closeCreateUserModal(): void {
+    this.dialog.close();
   }
 }

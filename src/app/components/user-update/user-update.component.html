@@ -1,7 +1,7 @@
-<mat-card>
-  <mat-card-title>
-    {{ userCurrentName && "Informações de " + userCurrentName.split(" ")[0] }}
-  </mat-card-title>
+<h1 mat-dialog-title>
+  {{ userCurrentName && "Informações de " + userCurrentName.split(" ")[0] }}
+</h1>
+<div mat-dialog-content class="container">
   <form [formGroup]="user">
     <mat-form-field appearance="outline">
       <mat-label>Nome</mat-label>
@@ -12,11 +12,10 @@
         name="name"
         required
       />
-      <!-- <ng-container *ngIf="user.controls.name.touched"> -->
+
       <mat-error *ngIf="user.controls.name.errors">
         Campo obrigatório
       </mat-error>
-      <!-- </ng-container> -->
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -30,11 +29,9 @@
         required
       />
 
-      <!-- <ng-container *ngIf="user.controls.email.touched"> -->
       <mat-error *ngIf="user.controls.email.errors?.email">
         E-mail inválido
       </mat-error>
-      <!-- </ng-container> -->
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -63,11 +60,14 @@
         name="bornDate"
         required
       />
-      <!-- <ng-container *ngIf="user.controls.bornDate.touched"> -->
+
       <mat-error *ngIf="user.controls.bornDate.errors">
         Campo obrigatório
       </mat-error>
-      <!-- </ng-container> -->
+
+      <mat-error *ngIf="user.controls.bornDate.hasError('isAdult')">
+        Usuário <strong>não</strong> tem a idade permitida
+      </mat-error>
     </mat-form-field>
   </form>
 
@@ -80,5 +80,5 @@
     Salvar
   </button>
 
-  <button mat-raised-button (click)="handleCancelUpdateUser()">Cancelar</button>
-</mat-card>
+  <button mat-raised-button (click)="closeUpdateUserModal()">Cancelar</button>
+</div>

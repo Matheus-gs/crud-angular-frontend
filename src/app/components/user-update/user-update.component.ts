@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Inject, OnInit } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
-import { User } from "src/app/models/user.model";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+
+import { DialogData, User } from "src/app/models/user.model";
 import { UserService } from "src/app/services/user.service";
 
 @Component({
@@ -25,13 +26,12 @@ export class UserUpdateComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private formBuilder: FormBuilder
+
+    private formBuilder: FormBuilder,
+    public dialogRef: MatDialogRef<UserUpdateComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {
-    this.route.params.subscribe((params) => {
-      this.userData.id = params["id"];
-    });
+    this.userData.id = this.data.id;
 
     this.user = this.formBuilder.group({
       name: ["", Validators.required],
@@ -53,24 +53,18 @@ export class UserUpdateComponent implements OnInit {
         email: [email, [Validators.required, Validators.email]],
         role: [role, Validators.required],
       });
+
+      this.userCurrentName = name;
     });
   }
 
   handleUpdateUser(): void {
     const data: User = this.user.value;
-    if (
-      this.user.valid &&
-      this.userService.isAdult(this.user.value.bornDate) == true
-    ) {
+    if (this.user.valid) {
       this.userService.update(this.userData.id, data).subscribe(() => {
         this.userService.showMessage("Informações alteradas com sucesso!");
-        this.router.navigate(["/users"]);
+        this.dialogRef.close();
       });
-    } else if (this.userService.isAdult(this.user.value.bornDate) == false) {
-      this.userService.showMessage(
-        "Só é permitido o cadastro de usuários maiores de 18 anos!",
-        true
-      );
     } else {
       this.userService.showMessage(
         "Verifique os dados e tente novamente!",
@@ -79,7 +73,7 @@ export class UserUpdateComponent implements OnInit {
     }
   }
 
-  handleCancelUpdateUser(): void {
-    this.router.navigate(["/users"]);
+  closeUpdateUserModal(): void {
+    this.dialogRef.close();
   }
 }

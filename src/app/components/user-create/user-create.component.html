@@ -10,29 +10,35 @@
         name="name"
         required
       />
-      <!-- <ng-container *ngIf="user.controls.name.touched"> -->
-      <mat-error *ngIf="user.controls.name.errors">
-        Campo obrigatório
+
+      <mat-error *ngIf="user.controls.name.hasError('required')">
+        Campo <strong>obrigatório</strong>
       </mat-error>
-      <!-- </ng-container> -->
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>E-mail</mat-label>
+      <mat-label>Email</mat-label>
       <input
+        type="email"
         matInput
-        placeholder="seunome@email.com"
-        email
         formControlName="email"
+        [errorStateMatcher]="matcher"
+        placeholder="seunome@email.com"
         name="email"
-        required
       />
 
-      <!-- <ng-container *ngIf="user.controls.email.touched"> -->
-      <mat-error *ngIf="user.controls.email.errors?.email">
-        E-mail inválido
+      <mat-error
+        *ngIf="
+          user.controls.email.hasError('email') &&
+          !user.controls.email.hasError('required')
+        "
+      >
+        Informe um email válido
       </mat-error>
-      <!-- </ng-container> -->
+
+      <mat-error *ngIf="user.controls.email.hasError('required')">
+        Campo <strong>obrigatório</strong>
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -44,11 +50,11 @@
         name="role"
         required
       />
-      <!-- <ng-container *ngIf="user.controls.role.touched"> -->
-      <mat-error *ngIf="user.controls.role.errors">
-        Campo obrigatório
+
+      <mat-error *ngIf="user.controls.role.hasError('required')">
+        Campo <strong>obrigatório</strong>
       </mat-error>
-      <!-- </ng-container> -->
+
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -61,11 +67,16 @@
         name="bornDate"
         required
       />
-      <!-- <ng-container *ngIf="user.controls.bornDate.touched"> -->
-      <mat-error *ngIf="user.controls.bornDate.errors">
-        Campo obrigatório
+
+      <mat-error *ngIf="user.controls.bornDate.hasError('required')">
+        Campo <strong>obrigatório</strong>
       </mat-error>
-      <!-- </ng-container> -->
+
+      <!-- <mat-error *ngIf="user.controls.bornDate.hasError('ageOver18')">
+        Usuário <strong>não</strong> tem a idade permitida
+      </mat-error> -->
+
+
     </mat-form-field>
 
     <button
@@ -76,8 +87,6 @@
     >
       Salvar
     </button>
-    <button mat-raised-button (click)="handleCancelCreateUser()">
-      Cancelar
-    </button>
+    <button mat-raised-button (click)="closeCreateUserModal()">Cancelar</button>
   </form>
 </mat-dialog-content>

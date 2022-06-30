@@ -1,10 +1,8 @@
 import { Component, Inject, OnInit } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { DialogData } from "src/app/models/user.model";
 import { UserService } from "src/app/services/user.service";
 
-export interface DialogData {
-  id: number;
-}
 
 @Component({
   selector: "app-user-delete",
@@ -18,20 +16,14 @@ export class UserDeleteComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
 
-  ngOnInit(): void {
-    console.log(this);
-  }
+  ngOnInit(): void {}
 
-  handleDeleteUser(id: any): void {
+  handleDeleteUser(): void {
+    const id = this.data.id;
     this.userService.delete(id).subscribe(() => {
       this.userService.showMessage("Usuário removido com sucesso!");
       this.dialogRef.close();
     });
-  }
-
-  confirmDeleteUser(): void {
-    const userId = this.data.id;
-    this.handleDeleteUser(userId);
   }
 
   closeDeleteUserModal(): void {

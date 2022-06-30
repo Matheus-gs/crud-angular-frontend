@@ -27,10 +27,10 @@ import { HttpClientModule } from "@angular/common/http";
 import { NavComponent } from "./components/template/nav/nav.component";
 import { HomeViewComponent } from "./views/home-view/home-view.component";
 import { UsersViewComponent } from "./views/users-view/users-view.component";
-import { UserCreateComponent } from "./components/users-view/user-create/user-create.component";
-import { UserReadComponent } from './components/users-view/user-read/user-read.component';
-import { UserUpdateComponent } from './components/users-view/user-update/user-update.component';
-import { UserDeleteComponent } from './components/users-view/user-delete/user-delete.component';
+import { UserCreateComponent } from "./components/user-create/user-create.component";
+import { UserReadComponent } from './components/user-read/user-read.component';
+import { UserUpdateComponent } from './components/user-update/user-update.component';
+import { UserDeleteComponent } from './components/user-delete/user-delete.component';
 
 @NgModule({
   declarations: [

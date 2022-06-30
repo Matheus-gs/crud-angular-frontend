@@ -5,3 +5,7 @@ export interface User {
   role: string;
   bornDate: string;
 }
+
+export interface DialogData {
+  id: number;
+}
