@@ -36,11 +36,11 @@ export class UserService {
     return EMPTY;
   }
 
-  isAdult(date: string): boolean {
-    const currentYear = new Date().getFullYear();
-    const userBornDateYear = new Date(date).getFullYear();
-    return currentYear - userBornDateYear >= 18;
-  }
+  // isAdult(date: string): boolean {
+  //   const currentYear = new Date().getFullYear();
+  //   const userBornDateYear = new Date(date).getFullYear();
+  //   return currentYear - userBornDateYear >= 18;
+  // }
 
   create(user: User): Observable<User> {
     return this.http.post<User>(this.baseUrl, user).pipe(

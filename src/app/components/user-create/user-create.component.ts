@@ -19,6 +19,7 @@ import {
 import { MatDialogRef } from "@angular/material/dialog";
 
 import { ErrorStateMatcher } from "@angular/material/core";
+import { ageOverEighteen } from "src/app/utils/ageOverEighteen";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -61,11 +62,18 @@ export class UserCreateComponent implements OnInit {
 
   handleCreateUser(): void {
     const data: User = this.user.value;
-    if (this.user.valid) {
+    const birthDate = data.bornDate;
+
+    if (this.user.valid && ageOverEighteen(birthDate)) {
       this.userService.create(data).subscribe(() => {
         this.userService.showMessage("Usuário cadastrado com sucesso!");
         this.dialog.close();
       });
+    } else if (!ageOverEighteen(birthDate)) {
+      this.userService.showMessage(
+        "Usuários com idade menor que 18 anos não são permitidos, verifique a data de nascimento e tente novamente",
+        true
+      );
     } else {
       this.userService.showMessage(
         "Verifique os dados e tente novamente!",

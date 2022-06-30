@@ -4,6 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 import { DialogData, User } from "src/app/models/user.model";
 import { UserService } from "src/app/services/user.service";
+import { ageOverEighteen } from "src/app/utils/ageOverEighteen";
 
 @Component({
   selector: "app-user-update",
@@ -60,11 +61,18 @@ export class UserUpdateComponent implements OnInit {
 
   handleUpdateUser(): void {
     const data: User = this.user.value;
-    if (this.user.valid) {
+    const birthDate = data.bornDate;
+
+    if (this.user.valid && ageOverEighteen(birthDate)) {
       this.userService.update(this.userData.id, data).subscribe(() => {
         this.userService.showMessage("Informações alteradas com sucesso!");
         this.dialogRef.close();
       });
+    } else if (!ageOverEighteen(birthDate)) {
+      this.userService.showMessage(
+        "Usuários com idade menor que 18 anos não são permitidos, verifique a data de nascimento e tente novamente",
+        true
+      );
     } else {
       this.userService.showMessage(
         "Verifique os dados e tente novamente!",

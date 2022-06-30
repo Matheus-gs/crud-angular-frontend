@@ -29,6 +29,10 @@
         required
       />
 
+      <mat-error *ngIf="user.controls.email.errors?.required">
+        Campo <strong>obrigatório</strong>
+      </mat-error>
+
       <mat-error *ngIf="user.controls.email.errors?.email">
         E-mail inválido
       </mat-error>
@@ -45,7 +49,7 @@
       />
       <!-- <ng-container *ngIf="user.controls.role.touched"> -->
       <mat-error *ngIf="user.controls.role.errors">
-        Campo obrigatório
+        Campo <strong>obrigatório</strong>
       </mat-error>
       <!-- </ng-container> -->
     </mat-form-field>
@@ -62,11 +66,7 @@
       />
 
       <mat-error *ngIf="user.controls.bornDate.errors">
-        Campo obrigatório
-      </mat-error>
-
-      <mat-error *ngIf="user.controls.bornDate.hasError('isAdult')">
-        Usuário <strong>não</strong> tem a idade permitida
+        Campo <strong>obrigatório</strong>
       </mat-error>
     </mat-form-field>
   </form>

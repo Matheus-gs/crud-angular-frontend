@@ -15,13 +15,16 @@ import { UserUpdateComponent } from "../user-update/user-update.component";
 export class UserReadComponent implements OnInit {
   users: User[];
   displayedColumns = ["name", "email", "role", "bornDate", "actions"];
-  constructor(
-    private userService: UserService,
 
-    public dialog: MatDialog
-  ) {}
+  constructor(private userService: UserService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
+    this.userService.read().subscribe((userData) => {
+      this.users = userData;
+    });
+  }
+
+  updateTable(): void {
     this.userService.read().subscribe((userData) => {
       this.users = userData;
     });
@@ -33,9 +36,7 @@ export class UserReadComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.userService.read().subscribe((userData) => {
-        this.users = userData;
-      });
+      this.updateTable();
     });
   }
 
@@ -48,9 +49,7 @@ export class UserReadComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.userService.read().subscribe((userData) => {
-        this.users = userData;
-      });
+      this.updateTable();
     });
   }
 
@@ -63,9 +62,7 @@ export class UserReadComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.userService.read().subscribe((userData) => {
-        this.users = userData;
-      });
+      this.updateTable();
     });
   }
 }
