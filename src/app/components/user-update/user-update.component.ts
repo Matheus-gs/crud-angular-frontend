@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 import { DialogData, User } from "src/app/models/user.model";
 import { UserService } from "src/app/services/user.service";
-import { ageOverEighteen } from "src/app/utils/ageOverEighteen";
+import { ageOverEighteen, ageValidator } from "src/app/validators/custom-validators";
 
 @Component({
   selector: "app-user-update",
@@ -36,7 +36,8 @@ export class UserUpdateComponent implements OnInit {
 
     this.user = this.formBuilder.group({
       name: ["", Validators.required],
-      bornDate: ["", Validators.required],
+      bornDate: ["", ageValidator()],
+      // bornDate: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
       role: ["", Validators.required],
     });
@@ -50,7 +51,8 @@ export class UserUpdateComponent implements OnInit {
 
       this.user = this.formBuilder.group({
         name: [name, Validators.required],
-        bornDate: [bornDate, Validators.required],
+        bornDate: [bornDate, ageValidator()],
+        // bornDate: [bornDate, Validators.required],
         email: [email, [Validators.required, Validators.email]],
         role: [role, Validators.required],
       });

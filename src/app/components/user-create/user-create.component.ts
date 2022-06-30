@@ -19,7 +19,7 @@ import {
 import { MatDialogRef } from "@angular/material/dialog";
 
 import { ErrorStateMatcher } from "@angular/material/core";
-import { ageOverEighteen } from "src/app/utils/ageOverEighteen";
+import { ageOverEighteen, ageValidator } from "src/app/validators/custom-validators";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -52,11 +52,14 @@ export class UserCreateComponent implements OnInit {
   ) {
     this.user = this.formBuilder.group({
       name: ["", Validators.required],
-      bornDate: ["", Validators.required],
+      bornDate: ["", ageValidator()],
+      // bornDate: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
       role: ["", Validators.required],
     });
   }
+
+  
 
   ngOnInit(): void {}
 

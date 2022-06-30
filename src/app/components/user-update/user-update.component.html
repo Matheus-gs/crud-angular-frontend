@@ -64,9 +64,12 @@
         name="bornDate"
         required
       />
-
-      <mat-error *ngIf="user.controls.bornDate.errors">
+      <mat-error *ngIf="user.get('bornDate').hasError('required')">
         Campo <strong>obrigatório</strong>
+      </mat-error>
+
+      <mat-error *ngIf="user.get('bornDate').hasError('minAge')">
+        Idade <strong>não</strong> pode ser menor de 18 anos
       </mat-error>
     </mat-form-field>
   </form>
